@@ -1,0 +1,120 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    connection-timeout: 5000ms
+
+spring:
+  profiles:
+    active: dev  # ??????????? prod
+
+  # ?????
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/study_room?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  # Redis??
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    database: 0
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-active: 20
+        max-idle: 10
+        min-idle: 5
+        max-wait: -1ms
+
+  # Jackson??
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+# MyBatis Plus??
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.studyroom.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cache-enabled: true
+    lazy-loading-enabled: false
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT??
+jwt:
+  secret: study-room-secret-key-2026-spring-boot-jwt-authentication
+  access-token-expire: 7200000   # 2??????
+  refresh-token-expire: 604800000 # 7?????
+  header: Authorization
+  token-prefix: Bearer
+
+# ???????
+wechat:
+  miniapp:
+    appid: your_appid_here      # ??????????AppID
+    secret: your_secret_here    # ??????????AppSecret
+
+# ???????
+studyroom:
+  # ?????????????????????
+  checkin-window-minutes: 30
+  # ????????????????????????
+  checkin-timeout-minutes: 15
+  # ??????????N??
+  max-booking-days: 3
+
+# ????
+logging:
+  level:
+    com.studyroom: debug
+    com.baomidou.mybatisplus: debug
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# ?????
+thread:
+  pool:
+    core-pool-size: 10
+    max-pool-size: 50
+    queue-capacity: 100
+    keep-alive-seconds: 60
+
+# Knife4j (Swagger)??
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+    enable-swagger-models: true
+    enable-document-manage: true
+
+# ????
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
