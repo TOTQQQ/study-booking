@@ -151,4 +151,27 @@ public class ReservationController {
         Boolean available = reservationService.checkAvailable(seatId, date, periodId);
         return Result.success(available);
     }
+
+     // ========== 以下吴思蓉负责==========
+    //当前有效预约
+    @GetMapping("/current")
+    public Map<String, Object> getCurrentReservations(@RequestParam Long userId) {
+        List<ReservationVO> reservations = reservationService.getCurrentReservations(userId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("message", "success");
+        result.put("data", reservations);
+        return result;
+    }
+
+    //历史预约记录
+    @PostMapping("/history")
+    public Map<String, Object> getHistoryReservations(@RequestBody QueryHistoryDTO dto) {
+        Map<String, Object> data = reservationService.getHistoryReservations(dto);
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("message", "success");
+        result.put("data", data);
+        return result;
+    }
 }
