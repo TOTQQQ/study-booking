@@ -1,0 +1,6 @@
+package com.studyroom.constant;
+
+public class SystemConstant {
+    public static final int TIMEOUT_MINUTES = 15;
+    public static final int MAX_ADVANCE_DAYS = 3;
+}
