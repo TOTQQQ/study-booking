@@ -5,38 +5,37 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 /**
- * 预约记录实体类
+ * 预约记录实体类 - 对应数据库 reservation 表
  */
 @Data
 @TableName("reservation")
 public class Reservation {
 
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
-    private String reservationNo;
+    private String reserveNo;
 
-    private Long userId;
+    private Integer userId;
 
-    private Long seatId;
+    private Integer seatId;
 
-    private Long studyRoomId;
+    private Integer roomId;
 
-    private Long periodId;
+    private String date;
 
-    private LocalDate date;
+    private Integer timePeriodId;
 
     private Integer status;
 
-    private LocalDateTime checkinDeadline;
+    private Long signTime;
 
-    private LocalDateTime checkinTime;
+    private Long cancelTime;
 
-    private LocalDateTime createTime;
+    private Long createTime;
 
-    private LocalDateTime updateTime;
+    private Long updateTime;
+
+
 }

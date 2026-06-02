@@ -3,7 +3,11 @@ package com.studyroom.controller;
 import com.studyroom.dto.QuerySeatDTO;
 import com.studyroom.service.SeatService;
 import com.studyroom.vo.SeatVO;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;

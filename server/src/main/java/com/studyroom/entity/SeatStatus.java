@@ -5,30 +5,27 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 /**
- * 座位状态实体类
+ * 座位每日状态实体类 - 对应数据库 seatStatus 表
  */
 @Data
-@TableName("seat_status")
+@TableName("seatStatus")
 public class SeatStatus {
 
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
-    private Long seatId;
+    private Integer seatId;
 
-    private LocalDate date;
+    private Integer roomId;
 
-    private Long periodId;
+    private String date;
+
+    private Integer timePeriodId;
 
     private Integer status;
 
-    private Long reservationId;
+    private Long createTime;
 
-    private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
+    private Long updateTime;
 }

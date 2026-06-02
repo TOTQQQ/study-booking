@@ -4,12 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 /**
- * 预约响应VO
+ * 预约响应VO - 对齐数据库表结构
  * 负责人：严雯琪
  */
 @Data
@@ -17,56 +13,56 @@ import java.time.LocalTime;
 public class ReservationVO {
 
     @ApiModelProperty("预约ID")
-    private Long id;
+    private Integer id;
 
-    @ApiModelProperty("预约编号")
-    private String reservationNo;
+    @ApiModelProperty("预约单号")
+    private String reserveNo;
 
     @ApiModelProperty("用户ID")
-    private Long userId;
+    private Integer userId;
 
     @ApiModelProperty("座位ID")
-    private Long seatId;
+    private Integer seatId;
 
-    @ApiModelProperty("座位编号")
-    private String seatNo;
+    @ApiModelProperty("座位编号，如A01")
+    private String seatCode;
 
-    @ApiModelProperty("座位行号")
-    private Integer seatRow;
+    @ApiModelProperty("座位X坐标")
+    private Integer seatX;
 
-    @ApiModelProperty("座位列号")
-    private Integer seatCol;
+    @ApiModelProperty("座位Y坐标")
+    private Integer seatY;
 
     @ApiModelProperty("自习室ID")
-    private Long studyRoomId;
+    private Integer roomId;
+
+    @ApiModelProperty("自习室名称")
+    private String roomName;
 
     @ApiModelProperty("时间段ID")
-    private Long periodId;
+    private Integer timePeriodId;
 
-    @ApiModelProperty("时间段名称")
-    private String periodName;
+    @ApiModelProperty("开始时间，如08:00")
+    private String startTime;
 
-    @ApiModelProperty("开始时间")
-    private LocalTime startTime;
+    @ApiModelProperty("结束时间，如12:00")
+    private String endTime;
 
-    @ApiModelProperty("结束时间")
-    private LocalTime endTime;
-
-    @ApiModelProperty("预约日期")
-    private LocalDate date;
+    @ApiModelProperty("预约日期，如2024-01-01")
+    private String date;
 
     @ApiModelProperty("预约状态：1-待签到，2-已签到，3-已取消，4-自动取消")
     private Integer status;
 
-    @ApiModelProperty("签到截止时间")
-    private LocalDateTime checkinDeadline;
+    @ApiModelProperty("签到时间（时间戳）")
+    private Long signTime;
 
-    @ApiModelProperty("签到时间")
-    private LocalDateTime checkinTime;
+    @ApiModelProperty("取消时间（时间戳）")
+    private Long cancelTime;
 
-    @ApiModelProperty("创建时间")
-    private LocalDateTime createTime;
+    @ApiModelProperty("创建时间（时间戳）")
+    private Long createTime;
 
-    @ApiModelProperty("更新时间")
-    private LocalDateTime updateTime;
+    @ApiModelProperty("更新时间（时间戳）")
+    private Long updateTime;
 }

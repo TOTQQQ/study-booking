@@ -3,30 +3,15 @@ package com.studyroom.enums;
 import lombok.Getter;
 
 /**
- * 座位状态枚举
+ * 座位状态枚举 - 对齐数据库 seatStatus.status 字段
+ * 数据库定义：1-可预约  2-已被预约
  */
 @Getter
 public enum SeatStatusEnum {
 
-    /**
-     * 可预约
-     */
-    AVAILABLE(0, "可预约"),
+    AVAILABLE(1, "可预约"),
 
-    /**
-     * 已预约
-     */
-    RESERVED(1, "已预约"),
-
-    /**
-     * 使用中
-     */
-    IN_USE(2, "使用中"),
-
-    /**
-     * 不可用
-     */
-    UNAVAILABLE(3, "不可用");
+    RESERVED(2, "已被预约");
 
     private final Integer code;
     private final String desc;

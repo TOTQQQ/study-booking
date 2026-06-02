@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -53,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public LoginVO wechatLogin(LoginDTO loginDTO) {
-        // 1. 调用微信接口获取openid和session_key
+        // 1. 调用微信接口获取openid
         JSONObject wechatResult = wechatUtil.jscode2session(appId, appSecret, loginDTO.getCode());
         
         if (wechatResult.containsKey("errcode") && wechatResult.getIntValue("errcode") != 0) {
@@ -64,8 +63,6 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String openid = wechatResult.getString("openid");
-        String sessionKey = wechatResult.getString("session_key");
-        String unionid = wechatResult.getString("unionid");
 
         log.info("微信登录成功，openid: {}", openid);
 
@@ -75,36 +72,36 @@ public class AuthServiceImpl implements AuthService {
         User user = userMapper.selectOne(queryWrapper);
 
         boolean isNewUser = false;
+        long now = System.currentTimeMillis();
+        
         if (user == null) {
             // 新用户，创建记录
             user = new User();
             user.setOpenid(openid);
-            user.setUnionid(unionid);
-            user.setSessionKey(sessionKey);
             user.setNickname(loginDTO.getNickname());
             user.setAvatar(loginDTO.getAvatar());
-            user.setCreateTime(LocalDateTime.now());
-            user.setUpdateTime(LocalDateTime.now());
+            user.setStatus(1);
+            user.setCreateTime(now);
+            user.setUpdateTime(now);
             userMapper.insert(user);
             isNewUser = true;
             log.info("创建新用户，userId: {}", user.getId());
         } else {
-            // 老用户，更新session_key和头像昵称
-            user.setSessionKey(sessionKey);
+            // 老用户，更新头像昵称
             if (loginDTO.getNickname() != null) {
                 user.setNickname(loginDTO.getNickname());
             }
             if (loginDTO.getAvatar() != null) {
                 user.setAvatar(loginDTO.getAvatar());
             }
-            user.setUpdateTime(LocalDateTime.now());
+            user.setUpdateTime(now);
             userMapper.updateById(user);
             log.info("更新用户信息，userId: {}", user.getId());
         }
 
         // 3. 生成JWT令牌
-        String accessToken = jwtUtil.generateAccessToken(user.getId(), openid);
-        String refreshToken = jwtUtil.generateRefreshToken(user.getId(), openid);
+        String accessToken = jwtUtil.generateAccessToken(user.getId().longValue(), openid);
+        String refreshToken = jwtUtil.generateRefreshToken(user.getId().longValue(), openid);
 
         // 4. 缓存用户信息和token
         String userKey = RedisConstant.USER_INFO_KEY + user.getId();
@@ -118,7 +115,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 5. 构建返回结果
         LoginVO loginVO = new LoginVO();
-        loginVO.setUserId(user.getId());
+        loginVO.setUserId(user.getId().longValue());
         loginVO.setOpenid(openid);
         loginVO.setNickname(user.getNickname());
         loginVO.setAvatar(user.getAvatar());
@@ -158,7 +155,7 @@ public class AuthServiceImpl implements AuthService {
         redisUtil.set(refreshTokenKey, newRefreshToken, refreshTokenExpire, TimeUnit.MILLISECONDS);
 
         // 5. 获取用户信息
-        User user = userMapper.selectById(userId);
+        User user = userMapper.selectById(userId.intValue());
 
         // 6. 构建返回结果
         LoginVO loginVO = new LoginVO();
@@ -198,7 +195,7 @@ public class AuthServiceImpl implements AuthService {
         if (userJson != null) {
             user = JSON.parseObject(userJson, User.class);
         } else {
-            user = userMapper.selectById(userId);
+            user = userMapper.selectById(userId.intValue());
             if (user == null) {
                 throw new BusinessException(ErrorCode.USER_NOT_FOUND, "用户不存在");
             }
@@ -207,7 +204,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         LoginVO loginVO = new LoginVO();
-        loginVO.setUserId(user.getId());
+        loginVO.setUserId(user.getId().longValue());
         loginVO.setOpenid(user.getOpenid());
         loginVO.setNickname(user.getNickname());
         loginVO.setAvatar(user.getAvatar());

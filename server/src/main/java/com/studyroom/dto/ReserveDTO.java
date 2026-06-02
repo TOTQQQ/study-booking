@@ -4,11 +4,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 
 /**
- * 预约请求DTO
+ * 预约请求DTO - 对齐数据库表结构
  * 负责人：严雯琪
  */
 @Data
@@ -17,13 +17,13 @@ public class ReserveDTO {
 
     @ApiModelProperty(value = "座位ID", required = true)
     @NotNull(message = "座位ID不能为空")
-    private Long seatId;
+    private Integer seatId;
 
-    @ApiModelProperty(value = "预约日期", required = true)
-    @NotNull(message = "预约日期不能为空")
-    private LocalDate date;
+    @ApiModelProperty(value = "预约日期，格式yyyy-MM-dd", required = true)
+    @NotBlank(message = "预约日期不能为空")
+    private String date;
 
     @ApiModelProperty(value = "时间段ID", required = true)
     @NotNull(message = "时间段ID不能为空")
-    private Long periodId;
+    private Integer timePeriodId;
 }

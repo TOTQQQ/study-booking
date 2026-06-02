@@ -5,23 +5,25 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.time.LocalTime;
-
 /**
- * 时间段实体类
+ * 时间段实体类 - 对应数据库 timePeriod 表
  */
 @Data
-@TableName("time_period")
+@TableName("timePeriod")
 public class TimePeriod {
 
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
-    private String periodName;
+    private String startTime;
 
-    private LocalTime startTime;
-
-    private LocalTime endTime;
+    private String endTime;
 
     private Integer sort;
+
+    private Integer status;
+
+    private Long createTime;
+
+    private Long updateTime;
 }
