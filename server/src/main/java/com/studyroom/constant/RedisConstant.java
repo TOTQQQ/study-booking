@@ -34,4 +34,9 @@ public class RedisConstant {
      * 预约超时缓存前缀
      */
     public static final String RESERVATION_TIMEOUT_KEY = "reservation:timeout:";
+
+
+    // ========== 过期时间（秒） ==========
+    public static final long SEAT_STATUS_EXPIRE_TIME = 24 * 60 * 60;  // ← 就加这一行
+
 }
