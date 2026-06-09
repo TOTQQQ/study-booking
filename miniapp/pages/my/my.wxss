@@ -1,0 +1,5 @@
+.my-box{background: #f5f7fa;min-height: 100vh;}
+.user-info{background: #1677ff;padding: 60rpx 30rpx;display: flex;align-items: center;gap: 30rpx;}
+.avatar{width: 120rpx;height: 120rpx;border-radius: 50%;background: #fff;text-align: center;line-height: 120rpx;font-size: 28rpx;}
+.name{color: #fff;font-size: 32rpx;}
+.list-item{background: #fff;padding: 35rpx;margin: 20rpx;border-radius: 10rpx;font-size: 28rpx;}

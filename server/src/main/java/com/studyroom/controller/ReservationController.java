@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "预约管理")
 @RestController
-@RequestMapping("/api/reservation")
+@RequestMapping("/reservation")
 @RequiredArgsConstructor
 @Slf4j
 public class ReservationController {

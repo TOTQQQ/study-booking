@@ -14,11 +14,11 @@ import java.util.List;
 @Mapper
 public interface SeatStatusMapper extends BaseMapper<SeatStatus> {
 
-    @Select("SELECT * FROM seatStatus WHERE date = #{date} AND room_id = #{roomId}")
+    @Select("SELECT * FROM seatStatus WHERE date = #{date} AND roomId = #{roomId}")
     List<SeatStatus> selectByDateAndRoom(@Param("date") String date,
                                          @Param("roomId") Integer roomId);
 
-    @Select("SELECT * FROM seatStatus WHERE seat_id = #{seatId} AND date = #{date} AND time_period_id = #{timePeriodId}")
+    @Select("SELECT * FROM seatStatus WHERE seatId = #{seatId} AND date = #{date} AND timePeriodId = #{timePeriodId}")
     SeatStatus selectBySeatDatePeriod(@Param("seatId") Integer seatId,
                                       @Param("date") String date,
                                       @Param("timePeriodId") Integer timePeriodId);

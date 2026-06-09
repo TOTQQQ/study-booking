@@ -3,6 +3,7 @@ package com.studyroom.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.studyroom.cache.SeatCacheService;
 import com.studyroom.constant.RedisConstant;
 import com.studyroom.dto.CancelDTO;
 import com.studyroom.dto.ReserveDTO;
@@ -50,6 +51,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final TimePeriodMapper timePeriodMapper;
     private final StudyRoomMapper studyRoomMapper;
     private final RedisUtil redisUtil;
+    private final SeatCacheService seatCacheService;
     private final IdGeneratorUtil idGeneratorUtil;
 
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -142,8 +144,8 @@ public class ReservationServiceImpl implements ReservationService {
             seatStatusMapper.updateById(seatStatus);
 
             // 8. 更新座位缓存
-            String cacheKey = RedisConstant.SEAT_STATUS_KEY + date + ":" + timePeriodId;
-            redisUtil.hset(cacheKey, seatId.toString(), SeatStatusEnum.RESERVED.getCode().toString());
+            seatCacheService.updateSingleSeatStatus(date, seat.getRoomId(), seatId, timePeriodId,
+                    SeatStatusEnum.RESERVED.getCode());
 
             log.info("预约成功，reserveNo: {}, userId: {}, seatId: {}", reserveNo, userId, seatId);
 
@@ -192,8 +194,8 @@ public class ReservationServiceImpl implements ReservationService {
         seatStatusMapper.update(null, seatStatusUpdate);
 
         // 更新座位缓存
-        String cacheKey = RedisConstant.SEAT_STATUS_KEY + reservation.getDate() + ":" + reservation.getTimePeriodId();
-        redisUtil.hset(cacheKey, reservation.getSeatId().toString(), SeatStatusEnum.AVAILABLE.getCode().toString());
+        seatCacheService.updateSingleSeatStatus(reservation.getDate(), reservation.getRoomId(),
+                reservation.getSeatId(), reservation.getTimePeriodId(), SeatStatusEnum.AVAILABLE.getCode());
 
         log.info("取消预约成功，reservationId: {}, userId: {}", reservationId, userId);
     }

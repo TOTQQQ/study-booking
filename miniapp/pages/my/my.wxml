@@ -1,0 +1,9 @@
+<view class="my-box">
+  <view class="user-info">
+    <view class="avatar">用户</view>
+    <view class="name">微信用户</view>
+  </view>
+  <view class="list-item" bindtap="goMyOrder">我的有效预约</view>
+  <view class="list-item" bindtap="goHistory">历史预约记录</view>
+  <view class="list-item" bindtap="goCheckin">签到页面</view>
+</view>

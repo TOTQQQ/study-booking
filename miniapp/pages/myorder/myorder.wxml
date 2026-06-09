@@ -1,0 +1,61 @@
+<view class="container">
+  <view class="title">我的有效预约</view>
+
+  <view class="order-box">
+    <!-- 无预约时显示 -->
+    <view wx:if="{{validOrders.length === 0}}" class="empty">
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">暂无有效预约</text>
+      <button class="btn-outline" bindtap="goToSeat">去预约座位</button>
+    </view>
+
+    <!-- 循环展示预约列表 -->
+    <block wx:else>
+      <view 
+        class="order-card" 
+        wx:for="{{validOrders}}" 
+        wx:key="createTime"
+        bindtap="viewDetail"
+        data-order="{{item}}">
+        
+        <view class="card-header">
+          <view class="seat-badge">🪑 {{item.seat}}号</view>
+          <view class="status-badge status-{{item.status === '待签到' ? 'pending' : (item.status === '已签到' ? 'checked' : 'other')}}">
+            {{item.status}}
+          </view>
+        </view>
+        
+        <view class="card-body">
+          <view class="info-row">
+            <text class="info-label">📅 日期</text>
+            <text class="info-value">{{item.date}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-label">⏰ 时段</text>
+            <text class="info-value">{{item.time}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-label">📋 单号</text>
+            <text class="info-value">{{item.createTime || item.id || '--'}}</text>
+          </view>
+        </view>
+        
+        <!-- 按钮区域（阻止冒泡，防止触发卡片点击） -->
+        <view class="card-actions" catchtap="stopPropagation">
+          <button 
+            class="cancel-btn" 
+            catchtap="cancelOrder" 
+            data-index="{{index}}">
+            取消预约
+          </button>
+          <button 
+            class="checkin-btn" 
+            catchtap="goCheckin" 
+            data-order="{{item}}">
+            去签到
+          </button>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

@@ -2,7 +2,7 @@ package com.studyroom.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.studyroom.constant.RedisConstant;
+import com.studyroom.cache.SeatCacheService;
 import com.studyroom.dto.CheckInDTO;
 import com.studyroom.entity.Reservation;
 import com.studyroom.entity.Seat;
@@ -19,7 +19,6 @@ import com.studyroom.mapper.SeatStatusMapper;
 import com.studyroom.mapper.StudyRoomMapper;
 import com.studyroom.mapper.TimePeriodMapper;
 import com.studyroom.service.CheckInService;
-import com.studyroom.utils.RedisUtil;
 import com.studyroom.vo.ReservationVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +46,7 @@ public class CheckInServiceImpl implements CheckInService {
     private final SeatStatusMapper seatStatusMapper;
     private final TimePeriodMapper timePeriodMapper;
     private final StudyRoomMapper studyRoomMapper;
-    private final RedisUtil redisUtil;
+    private final SeatCacheService seatCacheService;
 
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
@@ -137,8 +136,8 @@ public class CheckInServiceImpl implements CheckInService {
         // 注意：数据库 seatStatus.status 只有 1-可预约 2-已被预约，没有"使用中"状态
 
         // 7. 更新座位缓存
-        String cacheKey = RedisConstant.SEAT_STATUS_KEY + reservation.getDate() + ":" + reservation.getTimePeriodId();
-        redisUtil.hset(cacheKey, reservation.getSeatId().toString(), SeatStatusEnum.RESERVED.getCode().toString());
+        seatCacheService.updateSingleSeatStatus(reservation.getDate(), reservation.getRoomId(),
+                reservation.getSeatId(), reservation.getTimePeriodId(), SeatStatusEnum.RESERVED.getCode());
 
         log.info("签到成功，reservationId: {}, userId: {}, signTime: {}", reservationId, userId, signTimestamp);
 

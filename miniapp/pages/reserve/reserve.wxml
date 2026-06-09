@@ -1,0 +1,7 @@
+<view class="reserve-box">
+  <view class="info-item">预约日期：{{date}}</view>
+  <view class="info-item">座位号：{{seat}}号</view>
+  <view class="info-item">时间段：{{time}}</view>
+  <view class="tip">提示：仅当前时段预约会立即变为已占用</view>
+  <button class="submit-btn" bindtap="submitReserve">确认预约</button>
+</view>

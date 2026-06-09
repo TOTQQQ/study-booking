@@ -1,0 +1,14 @@
+<view class="container">
+  <view class="logo-area">
+    <text class="app-name">自习室预约系统</text>
+    <text class="slogan">高效学习，从预约开始</text>
+  </view>
+  
+  <view class="login-area">
+    <button class="login-btn" bindtap="handleLogin">微信授权登录</button>
+  </view>
+  
+  <view class="footer">
+    <text>登录即代表同意《用户协议》和《隐私政策》</text>
+  </view>
+</view>

@@ -1,0 +1,96 @@
+<view class="container">
+  <!-- 顶部筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-item">
+      <text class="label">日期</text>
+      <picker mode="date" value="{{selectDate}}" bindchange="bindDateChange">
+        <view class="picker">{{selectDate}}</view>
+      </picker>
+    </view>
+    
+    <view class="filter-item">
+      <text class="label">自习室</text>
+      <picker mode="selector" range="{{studyRoomList}}" range-key="roomName" bindchange="bindRoomChange">
+        <view class="picker">{{selectRoomName}}</view>
+      </picker>
+    </view>
+    
+    <view class="filter-item">
+      <text class="label">时段</text>
+      <picker mode="selector" range="{{timePeriodList}}" range-key="startTime" bindchange="bindTimePeriodChange">
+        <view class="picker">
+          <block wx:if="{{selectTimePeriodId && timePeriodList[selectTimePeriodId - 8]}}">
+            {{timePeriodList[selectTimePeriodId - 8].startTime}}-{{timePeriodList[selectTimePeriodId - 8].endTime}}
+          </block>
+          <block wx:else>
+            全部
+          </block>
+        </view>
+      </picker>
+    </view>
+  </view>
+  
+  <!-- 座位网格 -->
+  <view class="seat-grid" wx:if="{{!loading}}">
+    <block wx:for="{{seatList}}" wx:key="id">
+      <view 
+        class="seat-item {{item.isUsed ? 'used' : 'available'}}"
+        bindtap="chooseSeat"
+        data-seat="{{item}}"
+      >
+        <text class="seat-code">{{item.seatCode}}</text>
+      </view>
+    </block>
+  </view>
+  
+  <view class="loading" wx:else>
+    <text>加载中...</text>
+  </view>
+  
+  <!-- 预约弹窗 -->
+  <view class="popup-mask" wx:if="{{showPopup}}" bindtap="closePopup">
+    <view class="popup-content" catchtap="stopPropagation">
+      <view class="popup-header">
+        <text class="title">确认预约</text>
+        <text class="close" bindtap="closePopup">×</text>
+      </view>
+      
+      <view class="popup-body">
+        <view class="info-row">
+          <text class="label">座位号</text>
+          <text class="value">{{selectSeat.seatCode}}号</text>
+        </view>
+        
+        <view class="info-row">
+          <text class="label">日期</text>
+          <text class="value">{{selectDate}}</text>
+        </view>
+        
+        <view class="info-row">
+          <text class="label">自习室</text>
+          <text class="value">{{selectRoomName}}</text>
+        </view>
+        
+        <view class="time-select">
+          <text class="label">选择时段</text>
+          <view class="time-list">
+            <view 
+              wx:for="{{timePeriodList}}" 
+              wx:key="id"
+              class="time-item {{selectTimePeriodId === item.id ? 'selected' : ''}} {{!isTimePeriodAvailable(item.id) ? 'disabled' : ''}}"
+              bindtap="selectTimePeriod"
+              data-time="{{item}}"
+            >
+              {{item.startTime}}-{{item.endTime}}
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="popup-footer">
+        <button class="btn-cancel" bindtap="closePopup">取消</button>
+        <button class="btn-confirm" type="primary" bindtap="confirmSelect" loading="{{submitting}}">确认预约</button>
+      </view>
+    </view>
+  </view>
+</view>

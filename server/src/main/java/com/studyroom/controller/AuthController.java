@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "认证管理")
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -45,8 +45,12 @@ public class AuthController {
      */
     @ApiOperation("刷新Token")
     @PostMapping("/refresh")
-    public Result<LoginVO> refreshToken(@RequestParam String refreshToken) {
+    public Result<LoginVO> refreshToken(@RequestParam(required = false) String refreshToken,
+                                        @RequestBody(required = false) java.util.Map<String, String> body) {
         log.info("刷新Token请求");
+        if (refreshToken == null && body != null) {
+            refreshToken = body.get("refreshToken");
+        }
         LoginVO loginVO = authService.refreshToken(refreshToken);
         return Result.success(loginVO);
     }

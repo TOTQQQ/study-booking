@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 
@@ -123,7 +124,12 @@ public class JwtUtil {
      * 获取密钥
      */
     private SecretKey getSecretKey() {
-        byte[] encodedKey = Base64.getDecoder().decode(secret);
-        return new SecretKeySpec(encodedKey, 0, encodedKey.length, "HmacSHA256");
+        byte[] keyBytes;
+        try {
+            keyBytes = Base64.getDecoder().decode(secret);
+        } catch (IllegalArgumentException e) {
+            keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+        }
+        return new SecretKeySpec(keyBytes, 0, keyBytes.length, "HmacSHA256");
     }
 }

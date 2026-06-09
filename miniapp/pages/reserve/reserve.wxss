@@ -1,0 +1,4 @@
+.reserve-box{padding:30rpx;background:#f5f7fa;min-height:100vh;}
+.info-item{background:#fff;padding:30rpx;margin-bottom:20rpx;border-radius:10rpx;font-size:28rpx;}
+.submit-btn{background:#1677ff;color:#fff;margin-top:40rpx;}
+.tip{font-size:24rpx;color:#ff6700;margin:20rpx 0;line-height:1.5;}

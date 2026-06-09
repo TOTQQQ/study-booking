@@ -1,0 +1,55 @@
+<view class="container">
+  <!-- 头部统计 -->
+  <view class="header-stats">
+    <text class="total">共 {{total}} 条历史记录</text>
+  </view>
+  
+  <!-- 历史列表 -->
+  <view class="history-list" wx:if="{{historyOrders.length > 0}}">
+    <view class="order-card" wx:for="{{historyOrders}}" wx:key="id" wx:for-item="order">
+      <view class="card-header">
+        <text class="room-name">{{order.roomName}}</text>
+        <text class="status" style="color: {{order.statusColor}}">{{order.statusText}}</text>
+      </view>
+      
+      <view class="card-body">
+        <view class="info-row">
+          <text class="label">座位号</text>
+          <text class="value">{{order.seatCode}}号</text>
+        </view>
+        <view class="info-row">
+          <text class="label">预约日期</text>
+          <text class="value">{{order.date}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">预约时段</text>
+          <text class="value">{{order.startTime}}-{{order.endTime}}</text>
+        </view>
+        <view class="info-row" wx:if="{{order.useTime}}">
+          <text class="label">{{order.status === 2 ? '签到时间' : '取消时间'}}</text>
+          <text class="value">{{order.useTime}}</text>
+        </view>
+      </view>
+      
+      <view class="card-footer">
+        <button class="btn-detail" size="mini" bindtap="viewDetail" data-order="{{order}}">详情</button>
+        <button class="btn-rebook" size="mini" type="primary" bindtap="rebook" data-order="{{order}}">重新预约</button>
+        <button class="btn-delete" size="mini" bindtap="deleteHistory" data-order="{{order}}">删除</button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 空状态 -->
+  <view class="empty" wx:else>
+    <text class="empty-icon">📋</text>
+    <text class="empty-text">暂无历史记录</text>
+  </view>
+  
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+  <view class="no-more" wx:if="{{!hasMore && historyOrders.length > 0}}">
+    <text>没有更多了</text>
+  </view>
+</view>

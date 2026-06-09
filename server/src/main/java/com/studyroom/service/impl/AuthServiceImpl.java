@@ -43,6 +43,9 @@ public class AuthServiceImpl implements AuthService {
     @Value("${wechat.miniapp.secret}")
     private String appSecret;
 
+    @Value("${wechat.miniapp.mock-login:false}")
+    private Boolean mockLogin;
+
     @Value("${jwt.access-token-expire}")
     private Long accessTokenExpire;
 
@@ -53,16 +56,22 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(rollbackFor = Exception.class)
     public LoginVO wechatLogin(LoginDTO loginDTO) {
         // 1. 调用微信接口获取openid
-        JSONObject wechatResult = wechatUtil.jscode2session(appId, appSecret, loginDTO.getCode());
-        
-        if (wechatResult.containsKey("errcode") && wechatResult.getIntValue("errcode") != 0) {
-            log.error("微信登录失败，errcode: {}, errmsg: {}", 
-                wechatResult.getIntValue("errcode"), 
-                wechatResult.getString("errmsg"));
-            throw new BusinessException(ErrorCode.WECHAT_LOGIN_FAILED, "微信登录失败");
-        }
+        String openid;
+        if (Boolean.TRUE.equals(mockLogin)) {
+            openid = "dev_mock_openid";
+            log.info("开发环境模拟微信登录，openid: {}", openid);
+        } else {
+            JSONObject wechatResult = wechatUtil.jscode2session(appId, appSecret, loginDTO.getCode());
 
-        String openid = wechatResult.getString("openid");
+            if (wechatResult.containsKey("errcode") && wechatResult.getIntValue("errcode") != 0) {
+                log.error("微信登录失败，errcode: {}, errmsg: {}",
+                    wechatResult.getIntValue("errcode"),
+                    wechatResult.getString("errmsg"));
+                throw new BusinessException(ErrorCode.WECHAT_LOGIN_FAILED, "微信登录失败");
+            }
+
+            openid = wechatResult.getString("openid");
+        }
 
         log.info("微信登录成功，openid: {}", openid);
 

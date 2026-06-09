@@ -1,0 +1,56 @@
+<view class="container">
+  <!-- 头部背景 -->
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <text class="app-name">自习室预约系统</text>
+      <text class="slogan">专注学习，从选座开始</text>
+    </view>
+  </view>
+
+  <!-- 统计卡片（只有2个） -->
+  <view class="stats">
+    <view class="stat-card">
+      <text class="stat-num">{{stats.totalSeats}}</text>
+      <text class="stat-label">总座位数</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{stats.todayReservations}}</text>
+      <text class="stat-label">今日预约</text>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="functions">
+    <view class="func-item" bindtap="goSeat">
+      <view class="func-icon">🗺️</view>
+      <text class="func-title">在线选座</text>
+      <text class="func-desc">查看空闲座位，在线预约</text>
+    </view>
+    
+    <view class="func-item" bindtap="goCheckin">
+      <view class="func-icon">📱</view>
+      <text class="func-title">扫码签到</text>
+      <text class="func-desc">预约后到馆完成签到</text>
+    </view>
+    
+    <view class="func-item" bindtap="goMy">
+      <view class="func-icon">📋</view>
+      <text class="func-title">我的预约</text>
+      <text class="func-desc">查看当前/历史预约记录</text>
+    </view>
+  </view>
+
+  <!-- 系统规则 -->
+  <view class="rules">
+    <view class="rules-header">
+      <text class="rules-title">📖 系统规则</text>
+    </view>
+    <view class="rules-list">
+      <text class="rule-item">· 可提前1-3天预约座位</text>
+      <text class="rule-item">· 预约后15分钟内需签到</text>
+      <text class="rule-item">· 超时未签到自动取消并记录违约</text>
+      <text class="rule-item">· 累计违约3次，限制预约7天</text>
+    </view>
+  </view>
+</view>

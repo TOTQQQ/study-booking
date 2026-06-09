@@ -1,5 +1,6 @@
 package com.studyroom.service.impl;
 
+import com.studyroom.cache.SeatCacheService;
 import com.studyroom.dto.QuerySeatDTO;
 import com.studyroom.entity.Seat;
 import com.studyroom.entity.SeatStatus;

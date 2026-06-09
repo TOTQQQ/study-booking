@@ -58,6 +58,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+      table-underline: false
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
@@ -75,6 +76,7 @@ wechat:
   miniapp:
     appid: your_appid_here      # ??????????AppID
     secret: your_secret_here    # ??????????AppSecret
+    mock-login: false
 
 # ???????
 studyroom:

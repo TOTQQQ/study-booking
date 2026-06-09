@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "签到管理")
 @RestController
-@RequestMapping("/api/checkin")
+@RequestMapping("/checkin")
 @RequiredArgsConstructor
 @Slf4j
 public class CheckInController {
@@ -51,7 +51,11 @@ public class CheckInController {
     @PostMapping("/scan")
     public Result<ReservationVO> scanCheckIn(
             @RequestAttribute("userId") Long userId,
-            @RequestParam Long seatId) {
+            @RequestParam(required = false) Long seatId,
+            @RequestBody(required = false) java.util.Map<String, Long> body) {
+        if (seatId == null && body != null) {
+            seatId = body.get("seatId");
+        }
         log.info("用户扫码签到，userId: {}, seatId: {}", userId, seatId);
         ReservationVO result = checkInService.scanCheckIn(userId, seatId);
         return Result.success(result);

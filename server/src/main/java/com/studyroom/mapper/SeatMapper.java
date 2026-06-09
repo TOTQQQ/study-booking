@@ -14,6 +14,6 @@ import java.util.List;
 @Mapper
 public interface SeatMapper extends BaseMapper<Seat> {
 
-    @Select("SELECT * FROM seat WHERE room_id = #{roomId} AND status = 1")
+    @Select("SELECT * FROM seat WHERE roomId = #{roomId} AND status = 1")
     List<Seat> selectByRoomId(@Param("roomId") Integer roomId);
 }

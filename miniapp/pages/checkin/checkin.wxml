@@ -1,0 +1,65 @@
+<view class="container">
+  <view class="order-card" wx:if="{{orderInfo}}">
+    <view class="card-header">
+      <text class="status" style="color: {{orderInfo.statusColor}}">{{orderInfo.statusText}}</text>
+      <text class="order-no">订单号：{{orderInfo.reserveNo}}</text>
+    </view>
+    
+    <view class="card-body">
+      <view class="info-row">
+        <text class="label">座位号</text>
+        <text class="value">{{orderInfo.seatCode}}号</text>
+      </view>
+      <view class="info-row">
+        <text class="label">自习室</text>
+        <text class="value">{{orderInfo.roomName}}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">预约日期</text>
+        <text class="value">{{orderInfo.date}}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">预约时段</text>
+        <text class="value">{{orderInfo.startTime}}-{{orderInfo.endTime}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 倒计时 -->
+  <view class="countdown-area" wx:if="{{orderInfo && orderInfo.status === 1}}">
+    <text class="countdown-label">签到剩余时间</text>
+    <text class="countdown-time">{{formatCountdown()}}</text>
+    <text class="countdown-hint">请在预约开始后15分钟内签到</text>
+  </view>
+  
+  <!-- 签到按钮 -->
+  <view class="action-area" wx:if="{{orderInfo && orderInfo.status === 1}}">
+    <button 
+      class="checkin-btn" 
+      type="primary" 
+      bindtap="manualCheckin"
+      disabled="{{!canCheckin || checking}}"
+      loading="{{checking}}"
+    >
+      {{canCheckin ? '立即签到' : '暂无法签到'}}
+    </button>
+    
+    <button class="scan-btn" bindtap="scanCode">
+      <text>扫码签到</text>
+    </button>
+  </view>
+  
+  <!-- 已签到状态 -->
+  <view class="checked-area" wx:if="{{orderInfo && orderInfo.status === 2}}">
+    <view class="checked-icon">✅</view>
+    <text class="checked-text">已签到成功</text>
+    <text class="checked-hint">祝您学习愉快！</text>
+  </view>
+  
+  <!-- 已取消/超时状态 -->
+  <view class="cancelled-area" wx:if="{{orderInfo && (orderInfo.status === 3 || orderInfo.status === 4)}}">
+    <view class="cancelled-icon">⚠️</view>
+    <text class="cancelled-text">{{orderInfo.statusText}}</text>
+    <button class="rebook-btn" bindtap="goRebook">重新预约</button>
+  </view>
+</view>
